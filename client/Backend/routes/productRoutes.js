@@ -1,0 +1,37 @@
+import express from 'express';
+import Product from '../models/Product.js'; // pastikan path-nya sesuai
+
+const router = express.Router();
+
+// GET semua produk
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST produk baru
+router.post('/', async (req, res) => {
+  const { nama, deskripsi, harga, stok, kategori, gambar } = req.body;
+
+  const newProduct = new Product({
+    nama,
+    deskripsi,
+    harga,
+    stok,
+    kategori,
+    gambar
+  });
+
+  try {
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+export default router;
