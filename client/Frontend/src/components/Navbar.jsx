@@ -22,15 +22,15 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md font-poppins sticky top-0 z-50">
+    <nav className="bg-blue-600 bg-white shadow-md font-poppins sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-emerald-600 hover:text-emerald-500 transition duration-300">
+        <Link to="/" className="text-2xl font-bold text-blue-700 hover:text-emerald-500 transition duration-300">
           e-Apotek
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-6 text-emerald-600 font-semibold">
+        <div className="hidden md:flex items-center space-x-6 text-blue-700 font-semibold">
           <Link to="/" className="hover:text-emerald-500 transition duration-300">Home</Link>
           <Link to="/produk" className="hover:text-emerald-500 transition duration-300">Produk</Link>
           <Link to="/kontak" className="hover:text-emerald-500 transition duration-300">Kontak</Link>
@@ -45,10 +45,10 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <Link to="/SignIn" className="ml-4 px-3 py-1 bg-white border border-emerald-600 text-emerald-600 rounded hover:bg-emerald-50 transition">
+              <Link to="/SignIn" className="ml-4 px-3 py-1 bg-white border border-blue-700 text-blue-700 rounded hover:bg-emerald-500 transition">
                 Sign In
               </Link>
-              <Link to="/SignUp" className="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition">
+              <Link to="/SignUp" className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-emerald-500 transition">
                 Register
               </Link>
             </>
