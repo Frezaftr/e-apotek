@@ -1,5 +1,6 @@
 import express from 'express';
-import Product from '../models/Product.js'; // pastikan path-nya sesuai
+import Product from '../models/Product.js';
+import { protect, isAdmin } from '../middleware/authMiddleware.js'; // import middleware
 
 const router = express.Router();
 
@@ -13,8 +14,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST produk baru
-router.post('/', async (req, res) => {
+// POST produk baru - hanya admin
+router.post('/', protect, isAdmin, async (req, res) => {
   const { nama, deskripsi, harga, stok, kategori, gambar } = req.body;
 
   const newProduct = new Product({
@@ -23,7 +24,7 @@ router.post('/', async (req, res) => {
     harga,
     stok,
     kategori,
-    gambar
+    gambar,
   });
 
   try {

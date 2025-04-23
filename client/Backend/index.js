@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors'; // ✅ Tambahkan ini
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/admin", adminRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
