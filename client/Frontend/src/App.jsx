@@ -7,7 +7,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import AdminLogin from "./admin/pages/AdminLogin";
 import Dashboard from "./admin/pages/AdminDashboard";
-import AdminDashboard from "./admin/AdminDashboard";
+import AdminDashboard from "./admin/pages/AdminDashboard";
 import './index.css'; // atau './App.css' sesuai tempat kamu letakkan Tailwind
 
 
