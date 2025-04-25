@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   nama: {
@@ -13,14 +13,23 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  stok: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  kategori: {
+    type: String,
+    default: 'Umum',
+  },
   gambar: {
-    type: String, // URL gambar
+    type: String, // path ke file gambar
     required: true,
   },
 }, {
   timestamps: true,
-})
+});
 
-const Product = mongoose.model('Product', productSchema)
+const Product = mongoose.model('Product', productSchema);
 
-export default Product
+export default Product;

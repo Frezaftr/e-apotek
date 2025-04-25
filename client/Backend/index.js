@@ -1,17 +1,23 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors'; // ✅ Tambahkan ini
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Gunakan middleware cors
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
@@ -19,9 +25,14 @@ app.use(cors({
 
 app.use(express.json());
 
+// Static folder for uploads
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+// Routes
 app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/produk", productRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

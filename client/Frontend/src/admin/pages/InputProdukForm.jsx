@@ -1,4 +1,3 @@
-// src/admin/InputProdukForm.jsx
 import { useState } from "react";
 import axios from "axios";
 
@@ -10,17 +9,43 @@ const InputProdukForm = () => {
     stok: "",
   });
 
+  const [gambar, setGambar] = useState(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setGambar(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/products", formData);
+      let filename = "";
+
+      // Upload gambar jika ada
+      if (gambar) {
+        const uploadData = new FormData();
+        uploadData.append("gambar", gambar);
+
+        const uploadRes = await axios.post("http://localhost:5000/api/upload", uploadData, {
+          withCredentials: true,
+        });
+
+        filename = uploadRes.data.filename;
+      }
+
+      // Kirim data produk
+      const produkData = { ...formData, gambar: filename };
+      await axios.post("http://localhost:5000/api/products", produkData, {
+        withCredentials: true,
+      });
+
       alert("Produk berhasil ditambahkan!");
       setFormData({ nama: "", deskripsi: "", harga: "", stok: "" });
+      setGambar(null);
     } catch (error) {
       console.error(error);
       alert("Gagal menambahkan produk.");
@@ -68,6 +93,14 @@ const InputProdukForm = () => {
         onChange={handleChange}
         className="w-full p-2 mb-3 border rounded"
         required
+      />
+
+      <input
+        type="file"
+        name="gambar"
+        onChange={handleFileChange}
+        className="w-full p-2 mb-3 border rounded"
+        accept="image/*"
       />
 
       <button

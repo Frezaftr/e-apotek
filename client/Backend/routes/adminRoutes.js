@@ -1,8 +1,9 @@
+// routes/adminRoutes.js
+import express from 'express';
+import { loginAdmin } from '../controllers/adminController.js';
 
-import express from "express";
 const router = express.Router();
-import { loginAdmin } from "../controllers/adminController.js";
 
-router.post("/login", loginAdmin);
+router.post('/login', loginAdmin); // ❌ TIDAK perlu protect / isAdmin
 
 export default router;
