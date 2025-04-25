@@ -10,7 +10,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// ✅ Tambahkan produk baru (dengan upload gambar)
+// ✅ Tambahkan produk baru
 export const createProduct = async (req, res) => {
   try {
     const { nama, deskripsi, harga } = req.body;
@@ -20,7 +20,7 @@ export const createProduct = async (req, res) => {
       nama,
       deskripsi,
       harga,
-      gambar,
+      image: gambar,
     });
 
     await newProduct.save();

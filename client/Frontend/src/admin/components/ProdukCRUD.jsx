@@ -31,7 +31,7 @@ const ProdukCRUD = () => {
     formData.append('nama', form.nama);
     formData.append('harga', form.harga);
     formData.append('stok', form.stok);
-    if (imageFile) formData.append('image', imageFile);
+    if (imageFile) formData.append('gambar', imageFile); // 👈 harus 'gambar', bukan 'image'
 
     if (editingId) {
       await updateProduk(editingId, formData);
@@ -68,7 +68,7 @@ const ProdukCRUD = () => {
         <input name="nama" placeholder="Nama Produk" value={form.nama} onChange={handleChange} className="border p-2 w-full" required />
         <input name="harga" placeholder="Harga" type="number" value={form.harga} onChange={handleChange} className="border p-2 w-full" required />
         <input name="stok" placeholder="Stok" type="number" value={form.stok} onChange={handleChange} className="border p-2 w-full" required />
-        <input name="image" type="file" onChange={handleImageChange} className="border p-2 w-full" accept="image/*" />
+        <input name="gambar" type="file" onChange={handleImageChange} className="border p-2 w-full" accept="image/*" />
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
           {editingId ? 'Update' : 'Tambah'} Produk
         </button>
@@ -88,7 +88,11 @@ const ProdukCRUD = () => {
           {produk.map((item) => (
             <tr key={item._id}>
               <td className="p-2">
-                <img src={item.image} alt={item.nama} className="h-16 w-16 object-cover rounded" />
+                <img
+                  src={`http://localhost:5000/uploads/${item.image}`}
+                  alt={item.nama}
+                  className="h-16 w-16 object-cover rounded"
+                />
               </td>
               <td className="p-2">{item.nama}</td>
               <td className="p-2">Rp {Number(item.harga).toLocaleString()}</td>

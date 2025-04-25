@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
 
-const productSchema = new mongoose.Schema({
+const produkSchema = new mongoose.Schema({
   nama: {
-    type: String,
-    required: true,
-  },
-  deskripsi: {
     type: String,
     required: true,
   },
@@ -16,20 +12,11 @@ const productSchema = new mongoose.Schema({
   stok: {
     type: Number,
     required: true,
-    default: 0,
   },
-  kategori: {
+  image: {
     type: String,
-    default: 'Umum',
-  },
-  gambar: {
-    type: String, // path ke file gambar
-    required: true,
-  },
-}, {
-  timestamps: true,
-});
+  }
+}, { timestamps: true });
 
-const Product = mongoose.model('Product', productSchema);
-
-export default Product;
+const Produk = mongoose.model('Products', produkSchema);
+export default Produk;
