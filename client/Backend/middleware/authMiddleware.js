@@ -22,3 +22,11 @@ export const isAdmin = (req, res, next) => {
     res.status(403).json({ message: 'Not authorized as admin' });
   }
 };
+
+export const isUser = (req, res, next) => {
+  if (req.user && req.user.role === 'user') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Not authorized as user' });
+  }
+};
