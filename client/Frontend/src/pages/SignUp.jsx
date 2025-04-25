@@ -15,6 +15,7 @@ function SignUp() {
     e.preventDefault();
     try {
       await registerUser(form);
+      window.dispatchEvent(new Event('userChanged')); // ⬅️ Tambahin ini
       navigate("/SignIn");
     } catch (err) {
       alert(err.response?.data?.message || "Registrasi gagal");

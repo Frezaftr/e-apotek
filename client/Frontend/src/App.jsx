@@ -7,6 +7,9 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminDashboard from "./admin/pages/AdminDashboard";
+import { Toaster } from 'react-hot-toast';
+import Cart from './pages/Cart';
+
 
 import './index.css';
 
@@ -27,10 +30,12 @@ const AppContent = () => {
           <Route path="/kontak" element={<Kontak />} />
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/LoginAdmin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />  
         </Routes>
       </div>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 };

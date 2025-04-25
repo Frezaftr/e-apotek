@@ -13,7 +13,7 @@ const Home = () => {
         <div className="backdrop-brightness-90 min-h-screen w-full">
           <div className="max-w-6xl mx-auto text-center px-4 md:px-6 pt-52">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-md">
-              Selamat Datang di <span className="text-blue-300">e-Apotek</span>
+              Selamat Datang di <span className="text-blue-600">e-Apotek</span>
             </h1>
             <p className="text-lg md:text-xl mb-8 text-white drop-shadow">
               Platform apotek digital yang memudahkan Anda membeli obat dan konsultasi dengan apoteker profesional.
