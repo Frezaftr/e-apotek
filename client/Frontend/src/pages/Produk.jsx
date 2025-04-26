@@ -48,7 +48,7 @@ const Produk = () => {
   }, [search, kategori, produkList]);
 
   return (
-    <section className="min-h-screen bg-gray-50 pt-24 px-4 md:px-10">
+    <section className="min-h-screen bg-gray-50 pt-5 px-4 md:px-10">
       <div className="max-w-7xl mx-auto">
         {/* Search & Filter */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">

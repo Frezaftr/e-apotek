@@ -11,13 +11,13 @@ const ProdukItem = ({ produk }) => {
       const userToken = localStorage.getItem('userToken');
       setIsLoggedIn(!!(user?.token || userToken));
     };
-  
+
     checkLogin();
-  
+
     window.addEventListener('storage', checkLogin);
     window.addEventListener('focus', checkLogin);
     window.addEventListener('userChanged', checkLogin);
-  
+
     return () => {
       window.removeEventListener('storage', checkLogin);
       window.removeEventListener('focus', checkLogin);
@@ -33,7 +33,6 @@ const ProdukItem = ({ produk }) => {
     }
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
     const existingItemIndex = cart.findIndex(item => item._id === produk._id);
 
     if (existingItemIndex !== -1) {
@@ -54,7 +53,8 @@ const ProdukItem = ({ produk }) => {
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
-      <div className="w-full h-48 overflow-hidden">
+      {/* Gambar dengan aspect-ratio square agar ukuran seragam */}
+      <div className="aspect-square w-full overflow-hidden bg-gray-100">
         <img
           src={`http://localhost:5000/uploads/${produk.image}`}
           alt={produk.nama}
@@ -62,6 +62,7 @@ const ProdukItem = ({ produk }) => {
         />
       </div>
 
+      {/* Konten */}
       <div className="p-4 flex flex-col gap-2">
         <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">{produk.nama}</h3>
         <p className="text-sm text-gray-500 line-clamp-2">{produk.deskripsi}</p>
@@ -70,11 +71,11 @@ const ProdukItem = ({ produk }) => {
         <button
           onClick={handleAddToCart}
           disabled={!isLoggedIn}
-          className={`mt-3 px-4 py-2 rounded-full flex items-center justify-center gap-2 transition 
+          className={`mt-3 px-2 py-2 rounded-full flex items-center justify-center gap-2 transition 
             ${isLoggedIn ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
         >
-          <ShoppingCart size={16} />
-          Add to Cart
+          {/* <ShoppingCart size={16} /> */}
+          Add Product
         </button>
       </div>
     </div>

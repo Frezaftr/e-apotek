@@ -1,9 +1,15 @@
 import jwt from 'jsonwebtoken';
 
-const generateToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: '7d',
-  });
+const generateToken = (user) => {
+  if (!user || typeof user !== 'object') {
+    throw new Error('Invalid user payload for token');
+  }
+
+  return jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '1d' }
+  );
 };
 
 export default generateToken;
