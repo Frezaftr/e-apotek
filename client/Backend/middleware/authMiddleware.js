@@ -8,6 +8,7 @@ export const protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Token decoded:', decoded); // ✅ letakkan di sini
     req.user = decoded;
     next();
   } catch (err) {
@@ -16,6 +17,7 @@ export const protect = (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
+  console.log('User from token:', req.user); // ✅ di dalam sini
   if (req.user && req.user.role === 'admin') {
     next();
   } else {
