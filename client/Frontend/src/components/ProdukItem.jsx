@@ -72,7 +72,7 @@ const ProdukItem = ({ produk }) => {
           onClick={handleAddToCart}
           disabled={!isLoggedIn}
           className={`mt-3 px-2 py-2 rounded-full flex items-center justify-center gap-2 transition 
-            ${isLoggedIn ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+            ${isLoggedIn ? 'bg-blue-600 hover:bg-blue-400 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
         >
           {/* <ShoppingCart size={16} /> */}
           Add Product
