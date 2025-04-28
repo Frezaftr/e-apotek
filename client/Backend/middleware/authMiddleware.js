@@ -14,8 +14,8 @@ export const protect = (req, res, next) => {
     console.log('Token decoded:', decoded);
 
     req.user = {
-      _id: decoded.id,        // Ambil dari decoded.id supaya cocok dengan kebutuhan _id
-      role: decoded.role      // Tambahin role kalau kamu nanti mau pakai role di token
+      _id: decoded.id,
+      role: decoded.role,
     };
 
     next();

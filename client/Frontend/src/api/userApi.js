@@ -14,3 +14,16 @@ export const loginUser = async (userData) => {
   const response = await axios.post(`${API_URL}/login`, userData);
   return response.data;
 };
+
+// ⬇️ Tambahkan ini untuk ambil history transaksi
+export const getTransactionHistory = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Token tidak tersedia');
+
+  const response = await axios.get('http://localhost:5000/api/transaksi/history', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
