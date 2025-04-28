@@ -4,6 +4,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import transaksiRoutes from './routes/transaksiRoutes.js';
+
+
+
 
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -33,6 +37,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/produk", productRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use('/api/transaksi', transaksiRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
@@ -45,3 +50,5 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
   });
+
+  

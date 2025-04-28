@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -42,6 +44,7 @@ const Cart = () => {
   const getTotal = () => {
     return cartItems.reduce((acc, item) => acc + (item.quantity || 1) * (item.harga || 0), 0);
   };
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -89,7 +92,9 @@ const Cart = () => {
             </p>
           </div>
 
-          <button className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+          <button className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+             onClick={() => navigate('/checkout')}
+            >
             Checkout Sekarang
           </button>
         </div>

@@ -63,10 +63,16 @@ function Navbar() {
                   </span>
                 </div>
 
-                <div className="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg transform scale-95 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-200 ease-in-out z-10">
+                <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg transform scale-95 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-200 ease-in-out z-10 overflow-hidden">
+                  <Link
+                    to="/history"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 transition"
+                  >
+                    Riwayat
+                  </Link>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-600 rounded-b-lg"
+                    className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-600 hover:text-white transition"
                   >
                     Logout
                   </button>
@@ -77,7 +83,7 @@ function Navbar() {
             <>
               <Link
                 to="/SignIn"
-                className="ml-4 px-3 py-1 bg-white border border-blue-700 text-blue-700 rounded hover:bg-blue-500 transition"
+                className="ml-4 px-3 py-1 bg-white border border-blue-700 text-blue-700 rounded hover:bg-blue-500 hover:text-white transition"
               >
                 Sign In
               </Link>
@@ -98,6 +104,7 @@ function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Dropdown Menu */}
       <div className={`md:hidden ${open ? "block" : "hidden"} bg-blue-50 px-4 pb-4 space-y-2 transition-all duration-300 ease-in-out`}>
         <Link to="/" onClick={toggleMenu} className="block text-blue-600 font-medium hover:text-blue-500 transition">
           Home
@@ -111,6 +118,9 @@ function Navbar() {
             <Link to="/cart" onClick={toggleMenu} className="flex items-center space-x-2 text-blue-600">
               <ShoppingCart size={20} />
               <span>Keranjang</span>
+            </Link>
+            <Link to="/history" onClick={toggleMenu} className="block text-blue-600 font-medium hover:text-blue-500 transition">
+              Riwayat
             </Link>
             <div className="flex items-center space-x-2 text-blue-600">
               <AvatarInitial name={user.name} />
