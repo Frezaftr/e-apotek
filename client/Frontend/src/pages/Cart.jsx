@@ -87,12 +87,12 @@ const Cart = () => {
 
           <div className="flex justify-between items-center mt-6 border-t pt-4">
             <h3 className="text-xl font-semibold">Total</h3>
-            <p className="text-xl font-bold text-green-600">
+            <p className="text-xl font-bold text-blue-600">
               Rp {getTotal().toLocaleString('id-ID')}
             </p>
           </div>
 
-          <button className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+          <button className="w-full mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
              onClick={() => navigate('/checkout')}
             >
             Checkout Sekarang

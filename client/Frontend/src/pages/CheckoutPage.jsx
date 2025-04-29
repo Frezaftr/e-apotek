@@ -86,7 +86,7 @@ const Checkout = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Form pengiriman */}
         <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Informasi Pengiriman</h2>
+          <h2 className="text-lg font-semibold mb-4">Informasi Pemesanan</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="text" name="nama" placeholder="Nama Lengkap" value={formData.nama} onChange={handleInputChange} className="border p-2 rounded" />
             <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} className="border p-2 rounded" />
