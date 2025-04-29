@@ -1,18 +1,30 @@
-// src/admin/pages/AdminDashboard.jsx
 import { useEffect, useState } from "react";
-import ProdukCRUD from "../components/ProdukCRUD"; // Ganti dengan path sesuai kamu simpan
+import ProdukCRUD from "../components/ProdukCRUD";
+import TransaksiAdmin from "../components/TransaksiAdmin";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [counts, setCounts] = useState({ produk: 0, transaksi: 0, user: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const resProduk = await axios.get("http://localhost:5000/api/produk");
-        const resTransaksi = await axios.get("http://localhost:5000/api/transaksi");
-        const resUser = await axios.get("http://localhost:5000/api/user");
+        const token = localStorage.getItem("adminToken");
+
+        const resProduk = await axios.get("http://localhost:5000/api/produk", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const resTransaksi = await axios.get("http://localhost:5000/api/transaksi", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const resUser = await axios.get("http://localhost:5000/api/user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setCounts({
           produk: resProduk.data.length,
@@ -27,6 +39,11 @@ const AdminDashboard = () => {
     fetchCounts();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken"); // hapus token
+    navigate("/admin/login"); // redirect ke login admin
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -37,17 +54,40 @@ const AdminDashboard = () => {
         <nav className="flex-1 px-4 py-2">
           <ul>
             <li className="mb-2">
-              <button onClick={() => setActiveSection("dashboard")} className="w-full text-left px-2 py-2 rounded hover:bg-gray-700">Dashboard</button>
+              <button
+                onClick={() => setActiveSection("dashboard")}
+                className="w-full text-left px-2 py-2 rounded hover:bg-gray-700"
+              >
+                Dashboard
+              </button>
             </li>
             <li className="mb-2">
-              <button onClick={() => setActiveSection("produk")} className="w-full text-left px-2 py-2 rounded hover:bg-gray-700">Produk</button>
+              <button
+                onClick={() => setActiveSection("produk")}
+                className="w-full text-left px-2 py-2 rounded hover:bg-gray-700"
+              >
+                Produk
+              </button>
             </li>
             <li className="mb-2">
-              <button onClick={() => setActiveSection("transaksi")} className="w-full text-left px-2 py-2 rounded hover:bg-gray-700">Transaksi</button>
+              <button
+                onClick={() => setActiveSection("transaksi")}
+                className="w-full text-left px-2 py-2 rounded hover:bg-gray-700"
+              >
+                Transaksi
+              </button>
             </li>
           </ul>
         </nav>
-        <div className="p-4 text-sm border-t border-gray-700">Admin Panel</div>
+        {/* Tombol Logout */}
+        <div className="p-4 border-t border-gray-700">
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-2 py-2 bg-red-600 hover:bg-red-700 rounded"
+          >
+            Logout
+          </button>
+        </div>
       </aside>
 
       {/* Main content */}
@@ -73,7 +113,7 @@ const AdminDashboard = () => {
         {activeSection === "transaksi" && (
           <div>
             <h1 className="text-xl font-semibold mb-4">Riwayat Transaksi</h1>
-            {/* Tambahkan komponen CRUD Transaksi di sini nanti */}
+            <TransaksiAdmin />
           </div>
         )}
       </main>

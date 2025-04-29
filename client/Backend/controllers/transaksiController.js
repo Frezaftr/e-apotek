@@ -93,3 +93,8 @@ export const konfirmasiBayarTransaksi = asyncHandler(async (req, res) => {
 
   res.json({ message: 'Pembayaran berhasil dikonfirmasi', transaksi });
 });
+
+export const getAllTransaksi = asyncHandler(async (req, res) => {
+  const transaksi = await Transaksi.find().populate('user', 'nama email').sort({ createdAt: -1 });
+  res.json(transaksi);
+});

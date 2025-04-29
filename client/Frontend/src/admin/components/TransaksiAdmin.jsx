@@ -8,7 +8,12 @@ const TransaksiAdmin = () => {
 
   const fetchTransaksi = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/transaksi");
+      const token = localStorage.getItem('adminToken'); // ambil token dari localStorage
+      const res = await axios.get("http://localhost:5000/api/transaksi", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setTransaksi(res.data);
     } catch (error) {
       console.error("Gagal memuat data transaksi:", error);
@@ -17,16 +22,19 @@ const TransaksiAdmin = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchTransaksi();
-  }, []);
-
+  
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/transaksi/${id}/status`, {
-        status: newStatus,
-      });
+      const token = localStorage.getItem('adminToken'); // ambil token dari localStorage
+      await axios.put(
+        `http://localhost:5000/api/transaksi/${id}/status`,
+        { status: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       toast.success("Status transaksi berhasil diupdate");
       fetchTransaksi(); // refresh data
     } catch (error) {

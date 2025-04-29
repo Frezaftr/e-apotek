@@ -1,4 +1,3 @@
-// controllers/userController.js
 import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
@@ -19,7 +18,6 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    role: 'user', // ⬅️ default role ketika register
   });
 
   if (user) {
@@ -27,8 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role, // ⬅️ kirim role juga
-      token: generateToken(user), // ⬅️ kirim user object
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -49,8 +46,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role, // ⬅️ kirim role juga
-      token: generateToken(user), // ⬅️ kirim user object
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
@@ -58,4 +54,5 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
+// ⬇️ ekspor dua-duanya
 export { registerUser, loginUser };

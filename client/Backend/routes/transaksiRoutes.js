@@ -6,7 +6,9 @@ import {
   updateStatusTransaksi,
   konfirmasiBayarTransaksi // ✅ tambahan
 } from '../controllers/transaksiController.js';
-import { protect, isUser } from '../middleware/authMiddleware.js';
+import { protect, isAdmin , isUser } from '../middleware/authMiddleware.js';
+import { getAllTransaksi } from '../controllers/transaksiController.js';
+
 
 const router = express.Router();
 
@@ -20,9 +22,11 @@ router.get('/history', protect, isUser, getMyTransaksi);
 router.get('/:id', protect, isUser, getDetailTransaksi);
 
 // 🔁 Update status transaksi (admin/manual)
-router.put('/:id/status', updateStatusTransaksi);
+router.put('/:id/status', protect, isAdmin, updateStatusTransaksi);
 
 // ✅ Konfirmasi pembayaran user
 router.put('/:id/konfirmasi-bayar', protect, isUser, konfirmasiBayarTransaksi);
+
+router.get('/', protect, isAdmin, getAllTransaksi);
 
 export default router;
