@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("userToken");
-    // localStorage.removeItem("cart"); // opsional kalau kamu mau kosongin cart
+    localStorage.removeItem("cart"); // opsional kalau kamu mau kosongin cart
     setUser(null);
   };
 

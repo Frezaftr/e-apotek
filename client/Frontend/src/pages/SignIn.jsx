@@ -24,11 +24,7 @@ function SignIn() {
     try {
       const userData = await loginUser(form);
       login(userData);
-  
-      // ✅ Ganti penyimpanan token user
-      localStorage.setItem("userToken", userData.token);
-  
-      window.dispatchEvent(new Event('userChanged'));
+      window.dispatchEvent(new Event('userChanged')); // ⬅️ Tambahin ini bro
       navigate("/Produk");
     } catch (err) {
       alert(err.response?.data?.message || "Login gagal");

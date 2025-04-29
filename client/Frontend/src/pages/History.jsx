@@ -1,24 +1,37 @@
 // frontend/pages/History.jsx
 import React, { useEffect, useState } from 'react';
-import { getTransactionHistory } from '../api/userApi'; // Panggil dari userApi.js
+import axios from 'axios';
 
 const History = () => {
   const [transaksi, setTransaksi] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHistory = async () => {
+    const fetchTransaksi = async () => {
       try {
-        const data = await getTransactionHistory(); // Panggil API
-        setTransaksi(data); // Update transaksi
+        const token = localStorage.getItem('userToken'); // Ambil token user
+
+        if (!token) {
+          console.error('Token tidak tersedia. Harap login ulang.');
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get('http://localhost:5000/api/transaksi/history', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setTransaksi(response.data);
       } catch (error) {
-        console.error('Gagal mengambil data transaksi:', error.message);
+        console.error('Gagal memuat riwayat transaksi:', error);
       } finally {
-        setLoading(false); // Hentikan loading
+        setLoading(false);
       }
     };
 
-    fetchHistory();
+    fetchTransaksi();
   }, []);
 
   if (loading) {
