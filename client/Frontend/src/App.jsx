@@ -40,6 +40,7 @@ const AppContent = () => {
           <Route path="/transaksi/:id" element={<DetailTransaksiPage />} />
           <Route path="/history" element={< History />} />
           <Route path="/pembayaran/:id" element={<Pembayaran />} />
+          
         </Routes>
       </div>
       <Toaster position="top-center" reverseOrder={false} />

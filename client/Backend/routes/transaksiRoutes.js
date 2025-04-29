@@ -2,7 +2,9 @@ import express from 'express';
 import {
   buatTransaksi,
   getMyTransaksi,
-  getDetailTransaksi
+  getDetailTransaksi,
+  updateStatusTransaksi,
+  konfirmasiBayarTransaksi // ✅ tambahan
 } from '../controllers/transaksiController.js';
 import { protect, isUser } from '../middleware/authMiddleware.js';
 
@@ -16,5 +18,11 @@ router.get('/history', protect, isUser, getMyTransaksi);
 
 // 🔍 Detail transaksi berdasarkan ID
 router.get('/:id', protect, isUser, getDetailTransaksi);
+
+// 🔁 Update status transaksi (admin/manual)
+router.put('/:id/status', updateStatusTransaksi);
+
+// ✅ Konfirmasi pembayaran user
+router.put('/:id/konfirmasi-bayar', protect, isUser, konfirmasiBayarTransaksi);
 
 export default router;

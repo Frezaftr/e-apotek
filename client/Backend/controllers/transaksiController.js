@@ -17,6 +17,7 @@ export const buatTransaksi = asyncHandler(async (req, res) => {
     metodePembayaran,
     totalHarga,
     statusPembayaran: 'Belum Dibayar',
+    status: 'draft',
   });
 
   const createdTransaksi = await transaksi.save();
@@ -44,4 +45,51 @@ export const getDetailTransaksi = asyncHandler(async (req, res) => {
   }
 
   res.json(transaksi);
+});
+
+// 🔁 Update status transaksi secara umum (admin/manual)
+export const updateStatusTransaksi = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const transaksi = await Transaksi.findById(id);
+
+    if (!transaksi) {
+      return res.status(404).json({ message: "Transaksi tidak ditemukan" });
+    }
+
+    transaksi.status = status;
+    await transaksi.save();
+
+    res.json({ message: "Status transaksi berhasil diupdate", transaksi });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Terjadi kesalahan saat update status transaksi" });
+  }
+};
+
+// ✅ Konfirmasi pembayaran dari user
+export const konfirmasiBayarTransaksi = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const transaksi = await Transaksi.findById(id);
+
+  if (!transaksi) {
+    res.status(404);
+    throw new Error('Transaksi tidak ditemukan');
+  }
+
+  // Pastikan hanya user yang sama yang boleh ubah
+  if (transaksi.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Anda tidak memiliki izin untuk mengubah transaksi ini');
+  }
+
+  transaksi.statusPembayaran = 'Sudah Dibayar';
+  transaksi.status = 'pending';
+
+  await transaksi.save();
+
+  res.json({ message: 'Pembayaran berhasil dikonfirmasi', transaksi });
 });

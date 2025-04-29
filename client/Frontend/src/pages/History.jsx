@@ -5,6 +5,8 @@ import axios from 'axios';
 const History = () => {
   const [transaksi, setTransaksi] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterPembayaran, setFilterPembayaran] = useState('');
+  const [filterTransaksi, setFilterTransaksi] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +34,12 @@ const History = () => {
     fetchTransaksi();
   }, []);
 
+  const filteredTransaksi = transaksi.filter((trx) => {
+    const cocokPembayaran = filterPembayaran ? trx.statusPembayaran === filterPembayaran : true;
+    const cocokTransaksi = filterTransaksi ? trx.statusTransaksi === filterTransaksi : true;
+    return cocokPembayaran && cocokTransaksi;
+  });
+
   if (loading) {
     return <div className="p-6 text-center">Loading...</div>;
   }
@@ -40,11 +48,41 @@ const History = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Riwayat Transaksi</h1>
 
-      {transaksi.length === 0 ? (
-        <p className="text-gray-600 text-center">Belum ada transaksi.</p>
+      <div className="mb-4 flex flex-col md:flex-row gap-4">
+        <div>
+          <label className="block font-medium mb-1">Filter Status Pembayaran:</label>
+          <select
+            value={filterPembayaran}
+            onChange={(e) => setFilterPembayaran(e.target.value)}
+            className="border rounded px-3 py-2"
+          >
+            <option value="">Semua</option>
+            <option value="Belum Dibayar">Belum Dibayar</option>
+            <option value="Sudah Dibayar">Sudah Dibayar</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block font-medium mb-1">Filter Status Transaksi:</label>
+          <select
+            value={filterTransaksi}
+            onChange={(e) => setFilterTransaksi(e.target.value)}
+            className="border rounded px-3 py-2"
+          >
+            <option value="">Semua</option>
+            <option value="pending">Pending</option>
+            <option value="cancel">Cancel</option>
+            <option value="delivery">Delivery</option>
+            <option value="success">Success</option>
+          </select>
+        </div>
+      </div>
+
+      {filteredTransaksi.length === 0 ? (
+        <p className="text-gray-600 text-center">Tidak ada transaksi sesuai filter.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {transaksi.map((trx) => (
+          {filteredTransaksi.map((trx) => (
             <div
               key={trx._id}
               className="border rounded-xl shadow-lg p-6 hover:shadow-2xl transition bg-white flex flex-col justify-between"
@@ -57,10 +95,21 @@ const History = () => {
                 <p className="text-gray-700 mb-2">
                   <span className="font-semibold">Total:</span> Rp {trx.totalHarga.toLocaleString()}
                 </p>
-                <p className="mb-4">
-                  <span className="font-semibold">Status:</span>{' '}
+                <p className="mb-1">
+                  <span className="font-semibold">Status Pembayaran:</span>{' '}
                   <span className={trx.statusPembayaran === 'Sudah Dibayar' ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}>
                     {trx.statusPembayaran}
+                  </span>
+                </p>
+                <p>
+                  <span className="font-semibold">Status Transaksi:</span>{' '}
+                  <span className={
+                    trx.statusTransaksi === 'cancel' ? 'text-red-600 font-bold' :
+                    trx.statusTransaksi === 'pending' ? 'text-yellow-600 font-bold' :
+                    trx.statusTransaksi === 'delivery' ? 'text-blue-600 font-bold' :
+                    trx.statusTransaksi === 'success' ? 'text-green-600 font-bold' : ''
+                  }>
+                    {trx.statusTransaksi}
                   </span>
                 </p>
                 <div className="mb-2">

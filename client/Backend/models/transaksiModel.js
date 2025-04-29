@@ -42,6 +42,13 @@ const transaksiSchema = mongoose.Schema(
       enum: ['Belum Dibayar', 'Sudah Dibayar'],
       default: 'Belum Dibayar',
     },
+    // ✅ Tambahkan ini
+    statusTransaksi: {
+      type: String,
+      required: true,
+      enum: ['pending', 'cancel', 'delivery', 'success'],
+      default: 'pending'
+    }
   },
   {
     timestamps: true,
