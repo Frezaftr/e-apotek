@@ -24,7 +24,8 @@ function SignIn() {
     try {
       const userData = await loginUser(form);
       login(userData);
-      window.dispatchEvent(new Event('userChanged')); // ⬅️ Tambahin ini bro
+      localStorage.setItem("userToken", userData.token); // <-- TAMBAHKAN INI
+      window.dispatchEvent(new Event('userChanged'));
       navigate("/Produk");
     } catch (err) {
       alert(err.response?.data?.message || "Login gagal");

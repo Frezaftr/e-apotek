@@ -1,13 +1,20 @@
 import express from 'express';
-import { buatTransaksi, getMyTransaksi } from '../controllers/transaksiController.js';
-import { protect, isUser } from '../middleware/authMiddleware.js'; // <- pastikan isUser di-import
+import {
+  buatTransaksi,
+  getMyTransaksi,
+  getDetailTransaksi
+} from '../controllers/transaksiController.js';
+import { protect, isUser } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// Route untuk membuat transaksi baru
+// ➕ Buat transaksi baru
 router.post('/', protect, buatTransaksi);
 
-// Route untuk mendapatkan riwayat transaksi
+// 📜 Riwayat transaksi user
 router.get('/history', protect, isUser, getMyTransaksi);
+
+// 🔍 Detail transaksi berdasarkan ID
+router.get('/:id', protect, isUser, getDetailTransaksi);
 
 export default router;

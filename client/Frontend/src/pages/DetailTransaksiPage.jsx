@@ -1,81 +1,121 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
 
 const DetailTransaksiPage = () => {
   const { id } = useParams();
   const [transaksi, setTransaksi] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTransaksi = async () => {
+    const fetchDetail = async () => {
       try {
-        const userToken = localStorage.getItem('userToken');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        };
-
-        const { data } = await axios.get(`http://localhost:5000/api/transaksi/${id}`, config);
-        setTransaksi(data);
-        setLoading(false);
+        const token = localStorage.getItem('userToken');
+        const response = await axios.get(`http://localhost:5000/api/transaksi/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTransaksi(response.data);
       } catch (error) {
-        console.error(error);
-        toast.error('Gagal mengambil detail transaksi.');
-        setLoading(false);
+        console.error('Gagal mengambil detail transaksi:', error);
       }
     };
 
-    fetchTransaksi();
+    fetchDetail();
   }, [id]);
 
-  if (loading) {
-    return <div className="text-center py-10">Loading...</div>;
-  }
-
   if (!transaksi) {
-    return <div className="text-center py-10">Transaksi tidak ditemukan.</div>;
+    return <div className="p-6 text-center">Loading...</div>;
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">Detail Transaksi</h2>
+    <div className="max-w-5xl mx-auto p-6">
+        {/* Tombol Back */}
+      <div className="mb-6">
+        <button
+          onClick={() => navigate('/history')}
+          className="flex items-center text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          ← Kembali
+        </button>
+      </div>
+      <h1 className="text-3xl font-bold mb-8 text-center">Detail Transaksi</h1>
 
-      <div className="bg-white shadow rounded-lg p-4 space-y-4">
-        <div>
-          <h3 className="font-semibold">Alamat Pengiriman</h3>
-          <p>{transaksi.alamatPengiriman.alamat}, {transaksi.alamatPengiriman.kota}, {transaksi.alamatPengiriman.kodePos}</p>
+      <div className="bg-white rounded-xl shadow-lg p-8 space-y-8">
+
+        {/* Status + Tanggal */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center border-b pb-6">
+          <div>
+            <p className="text-gray-600">Tanggal Transaksi:</p>
+            <p className="font-semibold">{new Date(transaksi.createdAt).toLocaleString()}</p>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <p className="text-gray-600">Status Pembayaran:</p>
+            <p className={`font-bold ${transaksi.statusPembayaran === 'Sudah Dibayar' ? 'text-green-600' : 'text-red-600'}`}>
+              {transaksi.statusPembayaran}
+            </p>
+          </div>
         </div>
 
-        <div>
-          <h3 className="font-semibold">Metode Pembayaran</h3>
-          <p>{transaksi.metodePembayaran}</p>
+        {/* Alamat Pengiriman */}
+        <div className="border-b pb-6">
+          <h2 className="text-xl font-semibold mb-4">Alamat Pengiriman</h2>
+          <div className="text-gray-700 space-y-1">
+            <p><span className="font-semibold">Alamat:</span> {transaksi.alamatPengiriman.alamat}</p>
+            <p><span className="font-semibold">Kota:</span> {transaksi.alamatPengiriman.kota}</p>
+            <p><span className="font-semibold">Kode Pos:</span> {transaksi.alamatPengiriman.kodePos}</p>
+          </div>
         </div>
 
-        <div>
-          <h3 className="font-semibold">Status Pembayaran</h3>
-          <p className={transaksi.isPaid ? 'text-green-600' : 'text-red-600'}>
-            {transaksi.isPaid ? 'Sudah Dibayar' : 'Belum Dibayar'}
-          </p>
-        </div>
-
-        <div>
-          <h3 className="font-semibold">Produk</h3>
-          <ul className="space-y-2">
-            {transaksi.cartItems.map((item) => (
-              <li key={item.produk} className="flex justify-between">
-                <span>{item.nama} (x{item.qty})</span>
-                <span>Rp {item.harga.toLocaleString('id-ID')}</span>
-              </li>
+        {/* Produk */}
+        <div className="border-b pb-6">
+          <h2 className="text-xl font-semibold mb-4">Produk yang Dibeli</h2>
+          <div className="space-y-4">
+            {transaksi.cartItems.map((item, index) => (
+              <div key={index} className="flex items-center justify-between border p-4 rounded-lg bg-gray-50">
+                <div className="flex items-center space-x-4">
+                <img
+                  src={`http://localhost:5000/uploads/${item.image}`}
+                  alt={item.nama}
+                  onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.jpg'; }}
+                  className="w-16 h-16 object-cover rounded-md"
+                />
+                  <div>
+                    <p className="font-semibold">{item.nama}</p>
+                    <p className="text-sm text-gray-500">Jumlah: {item.qty}</p>
+                    <p className="text-sm text-gray-500">Harga Satuan: Rp {item.harga.toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="font-semibold text-gray-700 text-right">
+                  Subtotal: Rp {(item.harga * item.qty).toLocaleString()}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
 
-        <div className="text-lg font-bold text-right">
-          Total: Rp {transaksi.totalHarga.toLocaleString('id-ID')}
+        {/* Metode Pembayaran dan Total */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+          <div className="mb-6 md:mb-0">
+            <p className="text-gray-600">Metode Pembayaran:</p>
+            <p className="font-semibold">{transaksi.metodePembayaran}</p>
+          </div>
+          <div>
+            <p className="text-gray-600 text-right">Total Harga:</p>
+            <p className="text-2xl font-bold text-blue-600 text-right">Rp {transaksi.totalHarga.toLocaleString()}</p>
+          </div>
         </div>
+
+        {/* Tombol Bayar */}
+        {transaksi.statusPembayaran !== 'Sudah Dibayar' && (
+          <div className="text-center pt-6">
+            <button
+              onClick={() => navigate(`/pembayaran/${transaksi._id}`)}
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition"
+            >
+              Bayar Sekarang
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

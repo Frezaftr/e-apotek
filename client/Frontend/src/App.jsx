@@ -12,6 +12,7 @@ import Cart from './pages/Cart';
 import CheckoutPage from './pages/CheckoutPage';
 import DetailTransaksiPage from './pages/DetailTransaksiPage';
 import History from './pages/History';
+import Pembayaran from './pages/Pembayaran';
 
 import './index.css';
 
@@ -36,8 +37,9 @@ const AppContent = () => {
           <Route path="/LoginAdmin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />  
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/detail-transaksi/:id" element={<DetailTransaksiPage />} />
+          <Route path="/transaksi/:id" element={<DetailTransaksiPage />} />
           <Route path="/history" element={< History />} />
+          <Route path="/pembayaran/:id" element={<Pembayaran />} />
         </Routes>
       </div>
       <Toaster position="top-center" reverseOrder={false} />

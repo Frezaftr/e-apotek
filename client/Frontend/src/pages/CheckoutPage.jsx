@@ -37,7 +37,7 @@ const Checkout = () => {
         toast.error('Silakan login terlebih dahulu');
         return;
       }
-
+  
       const transaksiData = {
         user: user._id,
         cartItems: cartItems.map(item => ({
@@ -56,16 +56,18 @@ const Checkout = () => {
         totalHarga,
         statusPembayaran: 'Belum Dibayar',
       };
-
-      await axios.post('http://localhost:5000/api/transaksi', transaksiData, {
+  
+      const response = await axios.post('http://localhost:5000/api/transaksi', transaksiData, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
-
+  
+      const transaksiBaru = response.data;
+  
       toast.success('Pesanan berhasil dibuat!');
       localStorage.removeItem('cart');
-      navigate('/'); // redirect ke home atau riwayat pesanan
+      navigate(`/transaksi/${transaksiBaru._id}`); // Arahkan ke halaman detail transaksi
     } catch (error) {
       console.error(error);
       toast.error('Gagal membuat pesanan.');
