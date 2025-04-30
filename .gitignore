@@ -1,0 +1,14 @@
+# Ignore environment variables
+Backend/.env
+
+# Node modules
+node_modules/
+Backend/node_modules/
+Frontend/node_modules/
+
+# Logs
+*.log
+
+# Dist and build files
+dist/
+dist-ssr/
