@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// Import routes
 import transaksiRoutes from './routes/transaksiRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -15,14 +17,28 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Resolve dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ✅ Allowed origins (bisa ditambah nanti kalau pakai domain)
+const allowedOrigins = [
+  "http://localhost:3000", // React build served via Nginx
+  "http://localhost:5173"  // Vite dev server (opsional)
+];
+
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 
+// Parse JSON body
 app.use(express.json());
 
 // Static folder for uploads
@@ -46,5 +62,3 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
   });
-
-  

@@ -2,6 +2,11 @@ import asyncHandler from "express-async-handler";
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
 // @desc    Register user
 // @route   POST /api/users/register
 // @access  Public
@@ -54,5 +59,5 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// ⬇️ ekspor dua-duanya
-export { registerUser, loginUser };
+// Export all functions
+export { registerUser, loginUser, getUsers };

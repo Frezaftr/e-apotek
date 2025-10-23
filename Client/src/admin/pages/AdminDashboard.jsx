@@ -22,7 +22,7 @@ const AdminDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const resUser = await axios.get("http://localhost:5000/api/user", {
+        const resUser = await axios.get("http://localhost:5000/api/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProdukItem from '../components/ProdukItem';
 
+
 const Produk = () => {
   const [produkList, setProdukList] = useState([]);
   const [filteredProduk, setFilteredProduk] = useState([]);
